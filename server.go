@@ -10,6 +10,11 @@ import (
   "github.com/labstack/echo/middleware"
 )
 
+type Response struct{
+  ResponseCode int
+  Message string
+}
+
 func main() {
   // Echo instance
   e := echo.New()
@@ -22,14 +27,18 @@ func main() {
   e.GET("/", hello)
   e.GET("/server-up", server)
   e.GET("/ping", ping)
-
+  e.GET("/health",healthcheck)
   // Start serve
   e.Logger.Fatal(e.Start("0.0.0.0:1323"))
 }
 
 // Handler
-func hello(c echo.Context) error {
-  return c.String(http.StatusOK, "Hello, World!")
+func healthcheck(c echo.Context) error {
+  return c.JSON(http.StatusOK,&Response{
+    ResponseCode: http.StatusOK,
+    Message: "I'm healthy",
+  })
+
 }
 
 func ping(c echo.Context) error {
@@ -49,3 +58,6 @@ func server(c echo.Context) error {
   return c.String(http.StatusOK, msg)
 }
 
+func hello(c echo.Context) error {
+  return c.String(http.StatusOK, "Hello, World!")
+}
