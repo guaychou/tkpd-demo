@@ -18,7 +18,7 @@ type Response struct{
 func main() {
   // Echo instance
   e := echo.New()
-
+  log.Println("server initialize")
   // Middleware
   e.Use(middleware.Logger())
   e.Use(middleware.Recover())
